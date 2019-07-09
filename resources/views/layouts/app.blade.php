@@ -34,7 +34,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url('/') }}">App-Shop-Up-3</a>
+                <a class="navbar-brand" href="{{ url('/') }}">App-Shop-Up-5</a>
             </div>
 
             <div class="collapse navbar-collapse" id="navigation-example">
