@@ -59,7 +59,7 @@
                     </tbody>
                 </table>
 
-                {{ $products->links() }}
+                {{ $categories->links() }}
 
             </div>
         </div>
