@@ -28,6 +28,12 @@ Route::middleware(['auth','admin'])->prefix('admin')->namespace('Admin')->group(
 	Route::delete('/products/{id}/images','ImageController@destroy'); //borrar imagenes
 	Route::get('/products/{id}/images/select/{image}','ImageController@select'); //destacar imagenes
 
+	Route::get('/categories','CategoryController@index'); //listado
+	Route::get('/categories/create','CategoryController@create'); //formulario
+	Route::post('/categories','CategoryController@store'); //registrar
+	Route::get('/categories/{id}/edit/','CategoryController@edit'); //formulario edicion
+	Route::post('/categories/{id}','CategoryController@update'); //actualizar
+	Route::delete('/categories/{id}','CategoryController@destroy');//borrar
 });
 
 
