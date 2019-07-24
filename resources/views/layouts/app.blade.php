@@ -66,7 +66,7 @@
                                 onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">
                                 Cerrar sesión
-                       git pull         </a>
+                                </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
@@ -99,6 +99,8 @@
 
 <!-- Control Center for Material Kit: activating the ripples, parallax effects, scripts from the example pages etc -->
 <script src="{{ asset('js/material-kit.js') }}" type="text/javascript"></script>
+
+@yield('scripts')
 
 </html>
 

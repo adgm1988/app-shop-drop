@@ -10,85 +10,109 @@ class CategoryController extends Controller
 {
     //
     public function index(){
-		$categories = Category::paginate(10);
+		$categories = Category::orderBy('name')->paginate(10);
 		return view('admin.categories.index',compact('categories')); //listado			
 	}	
 
 	public function create(){
 
-		return view('admin.products.create'); //formulario	
+		return view('admin.categories.create'); //formulario	
 	}
 
     public function store(Request $request){
 
     	//validar
+    /**
+
+Aqui quitamos las reglas de aqui y las vamos a poner en el modelo, es otra opcion.
     	$messages=[
-    		'price.required'=>'El precio es un campo requerido',
-    		'price.min'=>'El precio tiene que ser un valor positivo',
-    		'name.required'=>'Es indispensable seleccionar un nombre de producto',
-    		'name.min'=>'El nombre del producto debe ser mayor a 3 caracteres',
-    		'description.required'=>'Es necesario proporcionar una descripcion general del producto',
+    		'name.required'=>'Es indispensable seleccionar un nombre de la categori',
+    		'name.min'=>'El nombre de la categoría debe ser mayor a 3 caracteres',
+    		'description.required'=>'Es necesario proporcionar una descripcion general de la categoría',
     		'description.max'=>'El campo de descripcion tiene un limite de 200 caracteres',
     	];
 
     	$rules=[
     		'name'=>'required|min:3',
-    		'description'=>'required|max:200',
-    		'price'=>'required|numeric|min:0',
+    		'description'=>'max:250',
     	];
 
-    	$this->validate($request, $rules, $messages);
+**/
+//aqui en vez de traer las variables como siempre lo hacemos de la parte de arriba, las pasamos al modelo para tenerlas juntas alla.
+    	$this->validate($request, Category::$rules, Category::$messages);
 
-		$product = new Product();
-		$product->name = $request->input('name');
-		$product->price = $request->input('price');
-		$product->description = $request->input('description');
-		$product->long_description = $request->input('long_description');
-		$product->save();
+		
+/** Opcion tipica para llenado de base de datos asignando valores "mnaualmente"
 
-		return redirect('/admin/products');
+		$category = new Category();
+		$category->name = $request->input('name');
+		$category->description = $request->input('description');
+		$category->save();
+
+	Opcion 2 de llenafdon con create, poniendo los valores del request
+		Category::create([
+			'name'=>'abc',
+			'description'=>'otro'
+		])
+
+**/
+
+//Esta opcion de store es de manera masiva, para esto en el modelo hay que poner los campos como fillable. los campos del formulario tienen que tener exactamente el mismo name que el campo de la tabla
+
+		Category::create($request->all());
+
+
+		return redirect('/admin/categories');
     }
 
-    public function edit($id){
-    	$product = Product::find($id);
-    	return view('admin/products/edit',compact('product'));
+    
+    public function edit(Category $category){
+
+    	// public function edit($id){ ---> esta es la manera normal
+
+
+    	/**esta es la manera normal
+    	$category = Category::find($id);
+    	**/
+
+
+
+    	return view('admin/categories/edit',compact('category'));
+
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, Category $category){
 
+
+/**
+
+Aqui quitamos las reglas de aqui y las vamos a poner en el modelo, es otra opcion.
     	$messages=[
-    		'price.required'=>'El precio es un campo requerido',
-    		'price.min'=>'El precio tiene que ser un valor positivo',
-    		'name.required'=>'Es indispensable seleccionar un nombre de producto',
-    		'name.min'=>'El nombre del producto debe ser mayor a 3 caracteres',
-    		'description.required'=>'Es necesario proporcionar una descripcion general del producto',
+    		'name.required'=>'Es indispensable seleccionar un nombre de la categori',
+    		'name.min'=>'El nombre de la categoría debe ser mayor a 3 caracteres',
+    		'description.required'=>'Es necesario proporcionar una descripcion general de la categoría',
     		'description.max'=>'El campo de descripcion tiene un limite de 200 caracteres',
     	];
 
     	$rules=[
     		'name'=>'required|min:3',
-    		'description'=>'required|max:200',
-    		'price'=>'required|numeric|min:0',
+    		'description'=>'max:250',
     	];
 
-    	$this->validate($request, $rules, $messages);
+**/
+		//aqui en vez de traer las variables como siempre lo hacemos de la parte de arriba, las pasamos al modelo para tenerlas juntas alla.
+    	$this->validate($request, Category::$rules, Category::$messages);
 
-    	$product = Product::find($id);
-		$product->name = $request->input('name');
-		$product->price = $request->input('price');
-		$product->description = $request->input('description');
-		$product->long_description = $request->input('long_description');
+    	//esta es una manera diferente mas corta porque pasas directo el parametro con el nombre del modelo, desde la ruta tiene que venir con el nombre del modelo.
+    	$category->update($request->all());
 
-		$product->save();
-
-		return redirect('/admin/products');
+		return redirect('/admin/categories');
 
     }
 
-    public function destroy($id){
-    	
-    	$product = Product::find($id);
-    	$product->delete();
+    public function destroy(category $category){
+    	//esta forma sin el find y asi es porque en vez de recibir el id desde la ruta recibimos la categorya ya directa.
+    	$category->delete();
 
     	return back();
     }

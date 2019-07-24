@@ -83,27 +83,31 @@
         </div>
 
         <div class="section text-center">
-            <h2 class="title">Productos Disponibles</h2>
+            <h2 class="title">Categorías</h2>
+
+            <form action="{{ url('/search') }}" method="get" class="form-inline">
+                <input type="text" placeholder="¿Que producto buscas?" class="form-control" name="query" id="search">
+                <button class="btn btn-primary btn-just-icon" type="submit" >
+                    <i class="material-icons">search</i>
+                </button>
+            </form>
 
             <div class="team">
                 <div class="row">
-                    @foreach($products as $product)
+                    @foreach($categories as $category)
                     <div class="col-md-4">
                         <div class="team-player">
-                            <img src="{{ $product->featured_image_url }}" alt="Thumbnail Image" class="img-raised img-circle">
+                            <img src="{{ $category->featured_image_url }}" alt="Thumbnail Image" class="img-raised img-circle">
                             <h4 class="title"> 
-                                <a href="{{ url('products/'.$product->id) }}">{{ $product->name }} </a>
-                                <br/>
-                                <small class="text-muted">{{ $product->category->name }}</small>
+                                <a href="{{ url('categories/'.$category->id) }}">{{ $category->name }} </a>
+                                
                             </h4>
-                            <p class="description">{{ $product->description }}</p>     
+                            <p class="description">{{ $category->description }}</p>     
                         </div>
                     </div>
                     @endforeach        
                 </div>
-                <div class="text-center">
-                    {{ $products->links() }}
-                </div>
+               
             </div>
 
         </div>
@@ -182,4 +186,31 @@
 </div>
 </div>
 </footer>
+@endsection
+
+
+@section('scripts')
+<script src="{{ asset('/js/typeahead.bundle.min.js') }}"></script> <!--Este se importo de github twitter typeahead-->
+<script>
+    $(function(){
+            //
+            var products = new Bloodhound({
+              datumTokenizer: Bloodhound.tokenizers.whitespace,
+              queryTokenizer: Bloodhound.tokenizers.whitespace,
+              // `states` is an array of state names defined in "The Basics"
+              prefetch: "{{ url('/products/json') }}"
+            });
+
+            $('#search').typeahead({
+              hint: true,
+              highlight: true,
+              minLength: 1
+          },
+          {
+              name: 'products',
+              source: products
+          });
+        });
+
+</script>
 @endsection

@@ -24,7 +24,7 @@ class ProductsTableSeeder extends Seeder
         */
 
         //PARA CREARLAS DE MANERA REALCIONADA
-        $categories = factory(Category::class,4)->create();
+        $categories = factory(Category::class,6)->create();
 
         $categories->each(function($cat){
             //hacemos 5 productos y luego los guardamos adentro de la categoria

@@ -24,26 +24,40 @@
             <form method="post" action="{{ url('/admin/products/'.$product->id) }}">
                 @csrf
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group label-floating">
                             <label class="control-label">Nombre del producto</label>
                             <input type="text" class="form-control" name="name" value="{{ old('name',$product->name) }}">
                         </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group label-floating">
                             <label class="control-label">Precio del producto</label>
                             <input type="number" step=".01" class="form-control" name="price" value="{{ old('price',$product->price) }}">
                         </div>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-3">
                         <div class="form-group label-floating">
                             <label class="control-label">Descripcion corta</label>
                             <input type="text" class="form-control" name="description" value="{{ old('description',$product->description) }}">
                         </div>
-                </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="form-group label-floating">
+                            <label class="control-label">Categoría</label>
+                             <select name="category_id" class="form-control">
+                                <option value="">General</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @if($category->id == old('category_id',$product->category_id)) selected @endif>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <textarea class="form-control" placeholder="Descripción extensa del producto" rows="3" name="long_description">{{ old('long_description',$product->long_description) }}</textarea>
@@ -59,35 +73,5 @@
 
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <nav class="pull-left">
-            <ul>
-                <li>
-                    <a href="http://www.creative-tim.com">
-                        Creative Tim
-                    </a>
-                </li>
-                <li>
-                    <a href="http://presentation.creative-tim.com">
-                     About Us
-                 </a>
-             </li>
-             <li>
-                <a href="http://blog.creative-tim.com">
-                 Blog
-             </a>
-         </li>
-         <li>
-            <a href="http://www.creative-tim.com/license">
-                Licenses
-            </a>
-        </li>
-    </ul>
-</nav>
-<div class="copyright pull-right">
-    &copy; 2016, made with <i class="fa fa-heart heart"></i> by Creative Tim
-</div>
-</div>
-</footer>
+@include('includes.footer')
 @endsection

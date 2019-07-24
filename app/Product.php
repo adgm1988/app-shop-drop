@@ -25,4 +25,12 @@ class Product extends Model
     	}
     	return '/images/not-available.jpg';
     }
+
+    public function getCategoryNameAttribute(){
+        if($this->category){
+            return $this->category->name;
+        }else{
+            return 'Cat. general';
+        }
+    }
 }

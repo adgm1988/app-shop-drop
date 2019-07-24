@@ -19,7 +19,7 @@
             <div class="team">
                 <div class="row">
 
-                    <a href="{{ url('admin/categories/create') }}" class="btn btn-primary btn-round">Nuevo categoría</a>
+                    <a href="{{ url('admin/categories/create') }}" class="btn btn-primary btn-round">Nueva categoría</a>
                     <table class="table">
                         <thead>
                             <tr>
@@ -29,9 +29,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($categories as $category)
+                            @foreach($categories as $key => $category)
                             <tr>
-                                <td class="text-center">{{ $category->id }}</td>
+                                <td class="text-center">{{ ($key + 1) }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->description }}</td>
                                 <td class="td-actions text-right">

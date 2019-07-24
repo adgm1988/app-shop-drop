@@ -37,7 +37,7 @@
                                 <td class="text-center">{{ $product->id }}</td>
                                 <td>{{ $product->name }}</td>
                                 <td>{{ $product->description }}</td>
-                                <td>{{ $product->category ? $product->category->name : 'General'}}</td>
+                                <td>{{ $product->category_name}}</td>
                                 <td class="text-right">&euro; {{ $product->price }}</td>
                                 <td class="td-actions text-right">
 
@@ -48,7 +48,7 @@
                                         @csrf
                                         {{method_field('DELETE')}}
 
-                                        <a href="" type="button" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
+                                        <a href="{{ url('products/'.$product->id) }}" target="_blank" type="button" rel="tooltip" title="View Profile" class="btn btn-info btn-simple btn-xs">
                                             <i class="fa fa-eye"></i> 
                                         </a>
 
