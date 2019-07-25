@@ -21,7 +21,7 @@
 		</li>
 	</ul>
 	<hr>
-	<p>Detalle del pedido:</p>
+	<p>Y este es el detalle del pedido:</p>
 	<ul>
 		@foreach($cart->details as $detail)
 		<li>
@@ -31,7 +31,7 @@
 		@endforeach
 	</ul>
 	<p>
-		<strong>Import a pagar: </strong>{{ $cart->total }}
+		<strong>Y este es el importe a pagar: </strong>{{ $cart->total }}
 	</p>
 	<p>
 		<a href="{{ url('/admin/order/'.$cart->id) }}">Haz click aquí</a> para ver más información sobre este pedido.

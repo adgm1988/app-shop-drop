@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Category;
-
+use File;
 class CategoryController extends Controller
 {
     //
@@ -20,7 +20,6 @@ class CategoryController extends Controller
 	}
 
     public function store(Request $request){
-
     	//validar
     /**
 
@@ -59,8 +58,22 @@ Aqui quitamos las reglas de aqui y las vamos a poner en el modelo, es otra opcio
 
 //Esta opcion de store es de manera masiva, para esto en el modelo hay que poner los campos como fillable. los campos del formulario tienen que tener exactamente el mismo name que el campo de la tabla
 
-		Category::create($request->all());
+		//Category::create($request->all()); no se peude porque tengo archivos, por eso uso only para los dos datos que si se pueden
+        $category= Category::create($request->only('name','description'));
 
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $path = public_path().'/images/categories';
+            $fileName = uniqid().'-'.$file->getClientOriginalName();
+            $moved = $file->move($path,$fileName);
+
+        //update cteogira
+            if($moved){ 
+                $category->image = $fileName;
+                $category->save();
+             }
+
+        }
 
 		return redirect('/admin/categories');
     }
@@ -104,7 +117,29 @@ Aqui quitamos las reglas de aqui y las vamos a poner en el modelo, es otra opcio
     	$this->validate($request, Category::$rules, Category::$messages);
 
     	//esta es una manera diferente mas corta porque pasas directo el parametro con el nombre del modelo, desde la ruta tiene que venir con el nombre del modelo.
-    	$category->update($request->all());
+    	//$category->update($request->all()); otra vez no se puede por el archivo
+        
+
+        $category->update($request->only('name','description'));
+
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $path = public_path().'/images/categories';
+            $fileName = uniqid().'-'.$file->getClientOriginalName();
+            $moved = $file->move($path,$fileName);
+
+        //update cteogira
+            if($moved){ 
+                $previousPath = $path.'/'.$category->image;
+
+                $category->image = $fileName;
+                $saved = $category->save();//update
+
+                if($saved)
+                    File::delete ($previousPath);
+             }
+
+        }
 
 		return redirect('/admin/categories');
 
