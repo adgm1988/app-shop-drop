@@ -21,7 +21,7 @@ class NewOrder extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user, Cart $cart)
     {
         //
         $this->user = $user;
