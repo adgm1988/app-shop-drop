@@ -69,4 +69,13 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    //este methodo ya existe en register user pero lo estamos sobreescribiendo aqui para no moficiar el archivo original
+
+    public function showRegistrationForm(Req $request)
+    {
+        $name  = $request->input('name');
+        $email = $request->input('email');
+        return view('auth.register', compact('name','email'));
+    }
 }
